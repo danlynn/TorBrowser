@@ -10,8 +10,11 @@ end
 
 def proxy_already_running?
   netstat_response = `netstat -an | grep 9150`
-  return false if netstat_response == ''
-  curl_response = `curl -IkL --connect-timeout 10 -X HEAD -x socks://localhost:9150 https://www.google.com 2>/dev/null`
+  if netstat_response == ''
+    sleep 5
+    return false
+  end
+  curl_response = `curl -IkL --connect-timeout 5 -X HEAD -x socks://localhost:9150 https://www.google.com 2>/dev/null`
   curl_response.lines[0] =~ /(?:200 OK)|(?:302 Found)/i
 end
 
@@ -35,7 +38,6 @@ end
 def launch_browser_when_proxy_ready
   fork do
     10.times do |i|
-      sleep 2
       if proxy_already_running?
         launch_browser
         exit 0
@@ -71,3 +73,4 @@ end
 
 # TODO: maybe run docker container as non-root user?
 # see: https://forums.docker.com/t/swiching-between-root-and-non-root-users-from-interactive-console/2269/2
+# also see how sabnzbd Dockerfile handled it: https://hub.docker.com/r/sabnzbd/sabnzbd/
