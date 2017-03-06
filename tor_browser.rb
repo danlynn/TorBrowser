@@ -24,7 +24,7 @@ def launch_browser
     log '=== opening incognito chrome browser'
     user_data_dir = "#{File.absolute_path(File.dirname(__FILE__))}/user-data"
     FileUtils.mkdir_p(user_data_dir)
-    `open -W -n -a "Google Chrome" --args --incognito --user-data-dir="#{user_data_dir}" --proxy-server=socks://localhost:9150`
+    `open -W -n -a "Google Chrome" --args --incognito --user-data-dir="#{user_data_dir}" --proxy-server=socks://localhost:9150 https://check.torproject.org/`
     log '=== stopping tor after incognito chrome browser closed'
     `docker stop tor_instance`
     log "\n=== tor successfully stopped\n"
@@ -74,3 +74,4 @@ end
 # TODO: maybe run docker container as non-root user?
 # see: https://forums.docker.com/t/swiching-between-root-and-non-root-users-from-interactive-console/2269/2
 # also see how sabnzbd Dockerfile handled it: https://hub.docker.com/r/sabnzbd/sabnzbd/
+
