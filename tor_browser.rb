@@ -57,7 +57,7 @@ else
   launch_browser_when_proxy_ready
   log '=== synchronizing docker date/time with host'
   date = `date -u +%m%d%H%M%Y`
-  log '=== docker date/time = ' + `docker run --privileged nagev/tor date -u #{date}`
+  log '=== docker date/time = ' + `docker run --rm --privileged nagev/tor date -u #{date}`
   log '=== starting tor'
   docker_response = `docker run -d --rm --name tor_instance -p 9150:9150 nagev/tor 2>&1`
   if docker_response =~ /Conflict\. The container name "\/tor_instance" is already in use by container ([a-f0-9]+)\./
